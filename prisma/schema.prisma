@@ -1,0 +1,48 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["views", "relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(uuid())
+  name         String
+  phone_number String       @unique
+  email        String
+  created_at   DateTime     @default(now())
+  password     String
+  contacts     Contact[]
+  spam_reports SpamReport[]
+}
+
+model Contact {
+  id           String @id @default(uuid())
+  userId       String
+  name         String
+  phone_number String
+  user         User   @relation(fields: [userId], references: [id])
+}
+
+model SpamReport {
+  id          String  @id @default(uuid())
+  phoneNumber String
+  spam        Boolean
+  userId      String
+  user        User    @relation(fields: [userId], references: [id])
+}
+
+view all_users {
+  name         String?
+  phone_number String
+  unique_id    String  @unique
+  original_id  String
+  type         String
+  spam_count   Int?
+  email        String?
+  non_spam_count Int?
+  
+}
