@@ -8,7 +8,7 @@ import { searchRouter } from "./routes/search";
 import { spamRouter } from "./routes/spam";
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.static("public"));
 
