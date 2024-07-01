@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "48dbc8b9-5111-418e-a17d-b1ec92478cb8",
+		"name": "spam_identifier_dev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36650928"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\": \"Test\",\n  \"email\": \"safiq@g.com\",\n  \"phone_number\": \"1234567890\",\n  \"name\": \"SafHello\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demo-backend-6oak.onrender.com/auth/register",
+					"protocol": "https",
+					"host": [
+						"demo-backend-6oak",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Save Token to Environment Variable\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"token\", jsonData.token);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"password\": \"Test\",\n  \"phone_number\": \"1234567890\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://demo-backend-6oak.onrender.com/auth/signin",
+					"protocol": "https",
+					"host": [
+						"demo-backend-6oak",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/search?search_term=wh",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "search_term",
+							"value": "wh"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mark_spam",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"phone_number\": \"6892881849\",\n   \"is_spam\": \"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/spam/mark_spam",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"spam",
+						"mark_spam"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get by user id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://demo-backend-6oak.onrender.com/search/d5947ccc-9324-4f1f-acba-91964f5acf06",
+					"protocol": "https",
+					"host": [
+						"demo-backend-6oak",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"search",
+						"d5947ccc-9324-4f1f-acba-91964f5acf06"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
