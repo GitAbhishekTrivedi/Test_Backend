@@ -1,6 +1,5 @@
 import express from 'express'
-import { signin } from '../controllers/auth'
-import { register } from 'module'
+import { signin, register } from '../controllers/auth'
 
 
 export const authRouter = express.Router()
