@@ -43,33 +43,42 @@ export const signin = async (req, res) => {
 };
 
 export const register = async (req, res) => {
+  try {
+    let name = req.body.name;
+    let phone_number = req.body.phone_number;
+    let password = req.body.password;
+    let email = req.body.email;
 
-  try{  
-  let name = req.body.name;
-  let phone_number = req.body.phone_number;
-  let password = req.body.password;
-  let email = req.body.email;
+    //hash password
+    // use bcrypt to hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  //hash password
-  // use bcrypt to hash password
-  const hashedPassword = await bcrypt.hash(password, 10);
+    if (!name || !phone_number || !password) {
+      return;
+    }
 
-  if (!name || !phone_number || !password) {
-    return;
-  }
+    const user = await prisma.user.findUnique({
+      where: {
+        phone_number: phone_number,
+      },
+    });
 
-  await prisma.user.create({
-    data: {
-      name: name,
-      phone_number: phone_number,
-      password: hashedPassword,
-      email: email || "",
-    },
-  });
+    if (user) {
+      return res.status(400).send("user already exists");
+    }
 
-  res.status(200).send("registration successful");
-}catch(err){
+    await prisma.user.create({
+      data: {
+        name: name,
+        phone_number: phone_number,
+        password: hashedPassword,
+        email: email || "",
+      },
+    });
+
+    res.status(200).send("registration successful");
+  } catch (err) {
     console.error(err);
     res.status(500).send("internal server error");
-}
+  }
 };
