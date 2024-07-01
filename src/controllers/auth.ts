@@ -1,4 +1,4 @@
-import { jwt } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import prisma from "../db";
 import bcrypt from "bcrypt";
 
@@ -12,7 +12,7 @@ export const signin = async (req, res) => {
     }
 
     const user = await prisma.user.findUnique({
-      where: {
+      where: { 
         phone_number: phone,
       },
     });
