@@ -4,6 +4,7 @@ import prisma from "../db";
 export const spamRouter = express.Router();
 
 spamRouter.post("/mark_spam", async (req, res) => {
+  try {
   let phone = req.body.phone_number;
   let isSpam = req.body.is_spam === "true" ? true : false
 
@@ -35,4 +36,9 @@ spamRouter.post("/mark_spam", async (req, res) => {
 
 
   res.status(200).json({ message: "marked as spam" });
+  }
+  catch (err) {
+    console.error(err);
+    res.status(500).send("internal server error");
+  }
 });
